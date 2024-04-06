@@ -18,11 +18,13 @@ import {
 } from "@remix-run/react";
 
 import appStyles from "./app.css?url";
+import tailwindStyles from "./tailwind.css?url";
 import { ContactRecord, createEmptyContact, getContacts } from "./data";
 import React, { FunctionComponent, useEffect, useState } from "react";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: appStyles },
+  { rel: "stylesheet", href: tailwindStyles },
 ];
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
