@@ -50,6 +50,11 @@ const fakeContacts = {
     const contact = await fakeContacts.get(id);
     invariant(contact, `No contact found for ${id}`);
     const updatedContact = { ...contact, ...values };
+
+    console.group("set...");
+    console.log("updatedContact: ", JSON.stringify(updatedContact));
+    console.groupEnd();
+
     fakeContacts.records[id] = updatedContact;
     return updatedContact;
   },
@@ -79,6 +84,7 @@ export async function createEmptyContact() {
 }
 
 export async function getContact(id: string) {
+  await new Promise((resolve) => setTimeout(resolve, 500));
   return fakeContacts.get(id);
 }
 
