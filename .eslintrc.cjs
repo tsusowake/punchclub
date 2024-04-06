@@ -35,6 +35,9 @@ module.exports = {
         "plugin:react-hooks/recommended",
         "plugin:jsx-a11y/recommended",
       ],
+      rules: {
+        "no-multiple-empty-lines": ["error", { max: 1, maxEOF: 1 }],
+      },
       settings: {
         react: {
           version: "detect",
@@ -65,6 +68,34 @@ module.exports = {
             alwaysTryTypes: true,
           },
         },
+      },
+      rules: {
+        "import/order": [
+          "error",
+          {
+            groups: [
+              "builtin",
+              "external",
+              "parent",
+              "sibling",
+              "index",
+              "object",
+              "type",
+            ],
+            pathGroups: [
+              {
+                pattern: "react",
+                group: "builtin",
+                position: "before",
+              },
+            ],
+            pathGroupsExcludedImportTypes: ["react"],
+            "newlines-between": "always",
+            alphabetize: {
+              order: "asc",
+            },
+          },
+        ],
       },
       extends: [
         "plugin:@typescript-eslint/recommended",
