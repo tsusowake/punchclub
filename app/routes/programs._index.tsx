@@ -1,8 +1,17 @@
-import { json } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import { FunctionComponent, useState } from "react";
 
-import LinkButton from "~/components/elements/button/LinkButton";
-import { fetchPrograms } from "~/repositories/program";
+import { json } from "@remix-run/node";
+import { Link, useLoaderData } from "@remix-run/react";
+import {
+  ColumnDef,
+  flexRender,
+  getCoreRowModel,
+  useReactTable,
+} from "@tanstack/react-table";
+import { format } from "date-fns";
+import { ja } from "date-fns/locale/ja";
+
+import { ProgramRecord, fetchPrograms } from "~/repositories/program";
 
 export const loader = async () => {
   const programs = await fetchPrograms();
@@ -12,35 +21,107 @@ export const loader = async () => {
 export default function Programs() {
   const { programs } = useLoaderData<typeof loader>();
 
+  return <Table programs={programs} />;
+}
+
+type TableProps = {
+  programs: ProgramRecord[];
+};
+const Table: FunctionComponent<TableProps> = ({ programs }) => {
+  const [data] = useState<ProgramRecord[]>(programs);
+  const columns: ColumnDef<ProgramRecord>[] = [
+    {
+      accessorKey: "id",
+      header: "ID",
+      cell: ({ row }) => {
+        const orig = row.original;
+        return <Link to={`/programs/${orig.id}`}>{orig.id}</Link>;
+      },
+    },
+    {
+      accessorKey: "name",
+      header: "番組名",
+    },
+    {
+      accessorKey: "startedAt",
+      header: "開始日時",
+      cell: ({ row }) => {
+        const orig = row.original;
+        return format(new Date(orig.createdAt), "yyyy/MM/dd HH:mm:ss", {
+          locale: ja,
+        });
+      },
+    },
+    {
+      accessorKey: "endedAt",
+      header: "終了日時",
+      cell: ({ row }) => {
+        const orig = row.original;
+        return format(new Date(orig.createdAt), "yyyy/MM/dd HH:mm:ss", {
+          locale: ja,
+        });
+      },
+    },
+    {
+      accessorKey: "createdAt",
+      header: "登録日時",
+      cell: ({ row }) => {
+        const orig = row.original;
+        return format(new Date(orig.createdAt), "yyyy/MM/dd HH:mm:ss", {
+          locale: ja,
+        });
+      },
+    },
+    {
+      accessorKey: "updatedAt",
+      header: "更新日時",
+      cell: ({ row }) => {
+        const orig = row.original;
+        return format(new Date(orig.createdAt), "yyyy/MM/dd HH:mm:ss", {
+          locale: ja,
+        });
+      },
+    },
+  ];
+  const table = useReactTable<ProgramRecord>({
+    columns,
+    data,
+    getCoreRowModel: getCoreRowModel(),
+  });
+
   return (
     <div>
       <table>
         <thead>
-          <tr>
-            <th scope="col">id</th>
-            <th scope="col">name</th>
-            <th scope="col">description</th>
-            <th scope="col">startedAt</th>
-            <th scope="col">endedAt</th>
-            <th scope="col">createdAt</th>
-            <th scope="col">updatedAt</th>
-            <th scope="col"></th>
-          </tr>
+          {table.getHeaderGroups().map((headerGroup) => (
+            <tr key={headerGroup.id}>
+              {headerGroup.headers.map((header) => (
+                <th key={header.id} scope="col" colSpan={header.colSpan}>
+                  {header.isPlaceholder
+                    ? null
+                    : flexRender(
+                        header.column.columnDef.header,
+                        header.getContext()
+                      )}
+                </th>
+              ))}
+            </tr>
+          ))}
         </thead>
         <tbody>
-          {programs.map((program) => {
+          {table.getRowModel().rows.map((row) => {
             return (
-              <tr key={program.id}>
-                <th scope="row">{program.id}</th>
-                <td>{program.name}</td>
-                <td>{program.description}</td>
-                <td>{program.startedAt}</td>
-                <td>{program.endedAt}</td>
-                <td>{program.createdAt}</td>
-                <td>{program.updatedAt}</td>
-                <td>
-                  <LinkButton to={`/programs/${program.id}`} label="Edit" />
-                </td>
+              <tr key={row.id}>
+                {row.getVisibleCells().map((cell) => {
+                  return (
+                    <td key={cell.id}>
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </td>
+                  );
+                })}
               </tr>
             );
           })}
@@ -48,4 +129,4 @@ export default function Programs() {
       </table>
     </div>
   );
-}
+};

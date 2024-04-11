@@ -40,6 +40,14 @@ const fakePrograms = {
     return newProgram;
   },
 
+  _create(values: ProgramMutation): void {
+    const createdAt = now().toISOString();
+    const updatedAt = createdAt;
+    const newProgram = { createdAt, updatedAt, ...values };
+    fakePrograms.records[values.id] = newProgram;
+    return;
+  },
+
   async update(id: string, values: ProgramMutation): Promise<ProgramRecord> {
     const program = await fakePrograms.get(id);
     invariant(program, `Program not found, id: ${id}`);
@@ -283,7 +291,7 @@ export async function deleteProgram(id: string) {
     updatedAt: "2023-09-23T05:18:01.085Z",
   },
 ].forEach((program: ProgramRecord) => {
-  fakePrograms.create({
+  fakePrograms._create({
     ...program,
   });
 });
