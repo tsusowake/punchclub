@@ -10,6 +10,7 @@ import {
 import { useTranslation } from "react-i18next";
 import { useChangeLanguage } from "remix-i18next/react";
 
+import Navigation from "./components/layouts/Navigation";
 import tailwindStyles from "./tailwind.css?url";
 
 import i18next from "~/i18next.server";
@@ -37,10 +38,19 @@ export default function App() {
         <Links />
       </head>
       <body>
-        <div id="detail">
-          <Outlet />
+        <div className="flex overflow-scroll">
+          <div
+            id="sidebar"
+            className="w-80 shrink-0 h-screen overflow-y-scroll"
+          >
+            <Navigation />
+          </div>
+          <div id="detail" className="flex-1 p-4 h-screen overflow-y-scroll">
+            <main className="h-auto">
+              <Outlet />
+            </main>
+          </div>
         </div>
-
         <ScrollRestoration />
         <Scripts />
       </body>
