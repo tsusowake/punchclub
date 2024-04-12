@@ -5,3 +5,10 @@
 body {
   font-family: "Noto Sans JP", "Hiragino Kaku Gothic ProN", sans-serif;
 }
+
+@layer base {
+  :root {
+    --gnav-expanded-width: 15rem;
+    --gnav-collapsed-width: 4rem;
+  }
+}

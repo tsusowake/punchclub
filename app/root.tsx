@@ -39,10 +39,7 @@ export default function App() {
       </head>
       <body>
         <div className="flex overflow-scroll">
-          <div
-            id="sidebar"
-            className="w-80 shrink-0 h-screen overflow-y-scroll"
-          >
+          <div id="sidebar" className="h-screen overflow-y-scroll">
             <Navigation />
           </div>
           <div id="detail" className="flex-1 p-4 h-screen overflow-y-scroll">

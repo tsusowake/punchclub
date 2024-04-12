@@ -1,51 +1,103 @@
-import { FunctionComponent, PropsWithChildren } from "react";
+import {
+  FunctionComponent,
+  PropsWithChildren,
+  useCallback,
+  useState,
+} from "react";
 
 import { NavLink } from "@remix-run/react";
 import { useTranslation } from "react-i18next";
+import { Tooltip } from "react-tooltip";
+
+import AccountButton from "~/components/account/AccountButton";
+import ChevronsLeftIcon from "~/icons/chevrons_left.svg?react";
+import ChevronsRightIcon from "~/icons/chevrons_right.svg?react";
+
+import HomeIcon from "~/icons/home.svg?react";
 
 export default function Navigation() {
   const { t } = useTranslation();
-  return (
-    <nav className="p-4 bg-slate-100 h-auto">
-      <ul>
-        <NavItem to={`/`}>{t("home")}</NavItem>
-        <NavItem to={`/programs`}>{t("program")}</NavItem>
+  const [isOpenNav, setIsOpenNav] = useState(true);
 
-        {/* スクロール用 */}
-        <NavItem to={`/others`}>{t("other")}</NavItem>
-        <NavItem to={`/others`}>{t("other")}</NavItem>
-        <NavItem to={`/others`}>{t("other")}</NavItem>
-        <NavItem to={`/others`}>{t("other")}</NavItem>
-        <NavItem to={`/others`}>{t("other")}</NavItem>
-        <NavItem to={`/others`}>{t("other")}</NavItem>
-        <NavItem to={`/others`}>{t("other")}</NavItem>
-        <NavItem to={`/others`}>{t("other")}</NavItem>
-        <NavItem to={`/others`}>{t("other")}</NavItem>
-        <NavItem to={`/others`}>{t("other")}</NavItem>
-        <NavItem to={`/others`}>{t("other")}</NavItem>
-        <NavItem to={`/others`}>{t("other")}</NavItem>
-        <NavItem to={`/others`}>{t("other")}</NavItem>
-        <NavItem to={`/others`}>{t("other")}</NavItem>
-        <NavItem to={`/others`}>{t("other")}</NavItem>
-        <NavItem to={`/others`}>{t("other")}</NavItem>
-        <NavItem to={`/others`}>{t("other")}</NavItem>
-        <NavItem to={`/others`}>{t("other")}</NavItem>
-        <NavItem to={`/others`}>{t("other")}</NavItem>
-        <NavItem to={`/others`}>{t("other")}</NavItem>
-        <NavItem to={`/others`}>{t("other")}</NavItem>
-        <NavItem to={`/others`}>{t("other")}</NavItem>
-        <NavItem to={`/others`}>{t("other")}</NavItem>
-        <NavItem to={`/others`}>{t("other")}</NavItem>
-        <NavItem to={`/others`}>{t("other")}</NavItem>
-        <NavItem to={`/others`}>{t("other")}</NavItem>
-        <NavItem to={`/others`}>{t("other")}</NavItem>
-        <NavItem to={`/others`}>{t("other")}</NavItem>
-        <NavItem to={`/others`}>{t("other")}</NavItem>
-        <NavItem to={`/others`}>{t("other")}</NavItem>
-        <NavItem to={`/others`}>{t("other")}</NavItem>
-        <NavItem to={`/others`}>{t("other")}</NavItem>
-      </ul>
-    </nav>
+  const handleChevronsLeftIconClick = useCallback(() => {
+    setIsOpenNav(false);
+  }, [setIsOpenNav]);
+
+  const handleChevronsRightIconClick = useCallback(() => {
+    setIsOpenNav(true);
+  }, [setIsOpenNav]);
+
+  return (
+    <div
+      className={`flex flex-col h-screen bg-slate-100 transition-all duration-200 border-r border-r-gray-light ${
+        isOpenNav
+          ? "w-[var(--gnav-expanded-width)]"
+          : "w-[var(--gnav-collapsed-width)]"
+      }`}
+    >
+      <div className="flex justify-end p-3 w-full select-none">
+        {isOpenNav ? (
+          <ChevronsLeftIcon
+            id="close-nav"
+            onClick={handleChevronsLeftIconClick}
+          />
+        ) : (
+          <ChevronsRightIcon
+            id="open-nav"
+            onClick={handleChevronsRightIconClick}
+          />
+        )}
+        <Tooltip anchorSelect="#close-nav" content={"固定を解除"} />
+        <Tooltip anchorSelect="#open-nav" content={"ナビゲーションを固定"} />
+      </div>
+
+      <nav className="flex flex-1 p-2 overflow-y-scroll">
+        <ul className="w-full">
+          <NavItem to={`/`}>
+            <HomeIcon />
+            {isOpenNav && t("home")}
+          </NavItem>
+          <NavItem to={`/programs`}>{t("program")}</NavItem>
+
+          {/* スクロール用 */}
+          <NavItem to={`/others`}>{t("other")}</NavItem>
+          <NavItem to={`/others`}>{t("other")}</NavItem>
+          <NavItem to={`/others`}>{t("other")}</NavItem>
+          <NavItem to={`/others`}>{t("other")}</NavItem>
+          <NavItem to={`/others`}>{t("other")}</NavItem>
+          <NavItem to={`/others`}>{t("other")}</NavItem>
+          <NavItem to={`/others`}>{t("other")}</NavItem>
+          <NavItem to={`/others`}>{t("other")}</NavItem>
+          <NavItem to={`/others`}>{t("other")}</NavItem>
+          <NavItem to={`/others`}>{t("other")}</NavItem>
+          <NavItem to={`/others`}>{t("other")}</NavItem>
+          <NavItem to={`/others`}>{t("other")}</NavItem>
+          <NavItem to={`/others`}>{t("other")}</NavItem>
+          <NavItem to={`/others`}>{t("other")}</NavItem>
+          <NavItem to={`/others`}>{t("other")}</NavItem>
+          <NavItem to={`/others`}>{t("other")}</NavItem>
+          <NavItem to={`/others`}>{t("other")}</NavItem>
+          <NavItem to={`/others`}>{t("other")}</NavItem>
+          <NavItem to={`/others`}>{t("other")}</NavItem>
+          <NavItem to={`/others`}>{t("other")}</NavItem>
+          <NavItem to={`/others`}>{t("other")}</NavItem>
+          <NavItem to={`/others`}>{t("other")}</NavItem>
+          <NavItem to={`/others`}>{t("other")}</NavItem>
+          <NavItem to={`/others`}>{t("other")}</NavItem>
+          <NavItem to={`/others`}>{t("other")}</NavItem>
+          <NavItem to={`/others`}>{t("other")}</NavItem>
+          <NavItem to={`/others`}>{t("other")}</NavItem>
+          <NavItem to={`/others`}>{t("other")}</NavItem>
+          <NavItem to={`/others`}>{t("other")}</NavItem>
+          <NavItem to={`/others`}>{t("other")}</NavItem>
+          <NavItem to={`/others`}>{t("other")}</NavItem>
+          <NavItem to={`/others`}>{t("other")}</NavItem>
+        </ul>
+      </nav>
+      <div>
+        <AccountButton />
+      </div>
+    </div>
   );
 }
 
