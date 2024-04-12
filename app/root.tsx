@@ -11,6 +11,7 @@ import { useTranslation } from "react-i18next";
 import { useChangeLanguage } from "remix-i18next/react";
 
 import Navigation from "./components/layouts/Navigation";
+import { NavigationProvider } from "./components/layouts/Navigation/NavigationContext";
 import tailwindStyles from "./tailwind.css?url";
 
 import i18next from "~/i18next.server";
@@ -40,7 +41,9 @@ export default function App() {
       <body>
         <div className="flex overflow-scroll">
           <div id="sidebar" className="h-screen overflow-y-scroll">
-            <Navigation />
+            <NavigationProvider>
+              <Navigation />
+            </NavigationProvider>
           </div>
           <div id="detail" className="flex-1 p-4 h-screen overflow-y-scroll">
             <main className="h-auto">
